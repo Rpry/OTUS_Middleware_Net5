@@ -25,15 +25,15 @@ namespace Middleware.Middlewares
     {
       context.Request.EnableBuffering();
       
-      var key = context.Request.Path.ToString();
-      var cacheData = _memoryCache.Get<byte[]>(key);
+      var cacheKey = $"cache_{context.Request.Path.ToString()}";
+      var cacheData = _memoryCache.Get<byte[]>(cacheKey);
       if (cacheData != null)
       {
         await GetResponseFromCacheAsync(context, cacheData);
       }
       else
       {
-        await SetCacheAndInvokeNextAsync(context, key);
+        await SetCacheAndInvokeNextAsync(context, cacheKey);
       }
     }
 

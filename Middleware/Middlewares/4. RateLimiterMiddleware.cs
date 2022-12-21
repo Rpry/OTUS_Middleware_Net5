@@ -20,8 +20,8 @@ namespace Middleware.Middlewares
     {
       var now = DateTime.UtcNow;
       var minInterval = TimeSpan.FromSeconds(5);
-      var key = context.Request.Path.ToString();
-      var lastRequestDate = memoryCache.Get<DateTime?>(key);
+      var rateLimitingKey = $"rateLimiting_{context.Request.Path.ToString()}";
+      var lastRequestDate = memoryCache.Get<DateTime?>(rateLimitingKey);
       if (lastRequestDate != null && now - lastRequestDate < minInterval)
       {
         context.Response.StatusCode = (int) HttpStatusCode.TooManyRequests;
@@ -29,7 +29,7 @@ namespace Middleware.Middlewares
       }
       else
       {
-        memoryCache.Set<DateTime>(key, now);
+        memoryCache.Set<DateTime>(rateLimitingKey, now);
         await _next(context);
       }
     }
