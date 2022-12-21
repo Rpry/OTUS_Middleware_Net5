@@ -44,8 +44,8 @@ namespace Middleware
       //app.UseRequestCulture();
       //app.UseHttpRequestLogging();
       //app.UseHttpStatusCodeExceptionMiddleware();
-      //app.UseCaching();
-      app.UseRateLimiting();
+      app.UseCaching();
+      //app.UseRateLimiting();
       app.UseRouting();
       
       app.UseAuthorization();
